@@ -20,6 +20,8 @@ ui <- fluidPage(theme = shinytheme("cerulean"),
                              numericInput("attribute_scale", 
                                          "Max. attribute value", 5, min=1, 
                                          max=10, step=1),
+                             textInput("graph_color", "Select graph color",
+                                       value="Blue"),
                              uiOutput("go_buttons"),
                              width=4
                              
@@ -58,12 +60,13 @@ server <- function(input, output) {
     attr_vals <- c()
     attr_labels <- c()
     scale_max <- input$attribute_scale
+    graph_col = input$graph_color
     for (index in 1:input$num_attrs) {
       attr_vals[index] = input[[paste0("attr_val", index)]]
       attr_labels[index] = input[[paste0("attr_lab", index)]]
     }
     output$plot <- renderPlot({
-      create_plot(scale_max, attr_vals, attr_labels)
+      create_plot(scale_max, attr_vals, attr_labels, graph_col)
     }, height = 800, width = 800)
   })
   
